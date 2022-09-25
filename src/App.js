@@ -1,18 +1,10 @@
 import React, { useState, useRef } from 'react';
-import './App.css';
 
 function App() {
   const [values, setValues] = useState({});
   const [valid, setValid] = useState(false);
-  const [typeMismatch, setTypeMistmatch] = useState(false);
   const [errors, setErrors] = useState([]);
-  const [allValid, setAllValid] = useState(false);
   const [formElementsTouched, setFormElementsTouched] = useState([]);
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    // Submit handler
-  }
 
   const handleInput = (e) => {
     const target = e.target;
@@ -37,13 +29,6 @@ function App() {
     console.log('Got value: ', e.target.value)
     console.log('Field valid?', valid);
     setValid(valid);
-    if (!valid && e.target.value.length > 0) {
-      e.target.setCustomValidity('Letters only!');
-    }
-
-    if(!valid && e.target.value.length === 0) {
-      e.target.setCustomValidity('Can not be blank.');
-    }
 
     console.log(e.target.validationMessage);
     setErrors(e.target.validationMessage);
@@ -56,16 +41,14 @@ function App() {
           <p>{errors}</p>
         </>
       );
-    } else {
-      return <></>;
     }
   }
 
   return (
-    <div className="App">
-      <form onSubmit={onSubmit}>
-        <label htmlFor="name">Name: 
-          <input className={!valid ? 'error' : 'pass'} type="text" name="name" value={values['name'] || ''} onBlur={ (event) => {validateField(event) }} onChange={handleInput} required={true} pattern="[a-zA-Z]+" />
+    <div className="container mx-auto p-2">
+      <form className="space-4 invalid:border-2 invalid:border-black">
+        <label htmlFor="email">Email: 
+          <input className="invalid:border-2 invalid:border-rose-500" type="email" name="email" placeholder="user@example.com" value={values['email'] || ''} onBlur={ (event) => {validateField(event) }} onChange={handleInput} required={true} pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" />
           { renderError() }
         </label>
       </form>
